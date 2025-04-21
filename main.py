@@ -579,8 +579,11 @@ class DeepfakeApp(tk.Tk):
                 
             else:
                 # Default to system default player
-                if sys.platform == "win32":
-                    os.startfile(self.output_video_path)
+                if sys.platform == "win32" or sys.platform == "win64":
+                    output_folder = os.path.dirname(os.path.abspath(__file__))
+                    output_video_path = os.path.join(output_folder, os.path.basename(self.output_video_path))
+                    os.rename(self.output_video_path, output_video_path)
+                    os.startfile(output_video_path)
                 elif sys.platform == "darwin":
                     subprocess.Popen(["open", self.output_video_path])
                 else:
